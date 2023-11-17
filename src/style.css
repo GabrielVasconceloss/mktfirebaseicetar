@@ -1,0 +1,81 @@
+/* Formulario.css */
+body {
+    background-image: url('images/city.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+  }
+  
+  form {
+    max-width: 400px;
+    padding: 20px;
+    background-color: rgb(18, 52, 87); 
+    border-radius: 8px;
+  }
+  
+  h1 {
+    display: block;
+    margin-bottom: 10px;
+    color: aliceblue;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    color: aliceblue;
+  }
+  
+  input {
+    width: calc(100% - 16px);
+    padding: 8px;
+    margin-bottom: 15px;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%; /* Ocupa toda a largura disponível */
+    text-align: center; /* Centraliza o texto do botão */
+  }
+  
+  /* Adicionando uma classe para alinhar o botão à direita */
+  .button-container {
+    text-align: right;
+  }
+
+  .logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+  }
+  
+  .logo {
+    max-width: 100px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+    margin: 10px;
+    background-color: #fff;
+    border: #fff;
+    border-style: solid;
+  }
+
+  .whatsapp-icon {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px; /* Ajuste o tamanho conforme necessário */
+    height: auto;
+    cursor: pointer;
+    z-index: 1000; /* Garante que o ícone esteja acima de outros elementos na página */
+  }
