@@ -14,7 +14,6 @@ export const App = () => {
   document.title = 'Icetar';
   const [empresa, setEmpresa] = useState("");
   const [nomecomp, setNomecomp] = useState("");
-  const [nomemanu, setNomemanu] = useState("");
   const [email, setEmail] = useState("");
   const [wpp, setWpp] = useState("");
   const [forms, setFoms] = useState([]);
@@ -24,26 +23,17 @@ export const App = () => {
   const [erro, setErro] = useState(null);
 
   async function addForm(){
-    if (!empresa || !nomecomp || !nomemanu || !email || !wpp) {
+    if (!empresa || !nomecomp || !email || !wpp) {
       setErro("Por favor, preencha todos os campos.");
       return;
     }else{
       setEnviado(true);
       console.log(enviado);
       track('Form Submitted', { formId: 'seu_form_id' });
-      const form = await addDoc(formsCollection, {empresa, nomecomp, nomemanu, email, wpp, data:serverTimestamp(), status:0});}
+      const form = await addDoc(formsCollection, {empresa, nomecomp, email, wpp, data:serverTimestamp(), status:0});}
    
   }
   
-
-  useEffect(()=> {
-    const getForms = async () => {
-      const data = await getDocs(formsCollection);
-      setFoms(data.docs.map((doc) => ({...doc.data(), id: doc.id})));
-    };
-    getForms();
-  },[]);
-
   return (    
     <div>
       <a href='https://api.whatsapp.com/send?phone=5511974636540'>
@@ -75,13 +65,11 @@ export const App = () => {
                 </div>
                 <h1>Solicite sua cotação</h1>
                 <input type='text' name="empresa" placeholder='Nome da Empresa...' required='true' value={empresa} onChange={(e) => setEmpresa(e.target.value)}></input>
-                <input type='text' name="name" placeholder='Responsável por Compras...' required='true' value={nomecomp} onChange={(e) => setNomecomp(e.target.value)}></input>
-                <input type='text' name="responsavel" placeholder='Responsável por Manutenção...' value={nomemanu} onChange={(e) => setNomemanu(e.target.value)}></input>
+                <input type='text' name="name" placeholder='Responsável...' required='true' value={nomecomp} onChange={(e) => setNomecomp(e.target.value)}></input>
                 <input type="email" name="email" placeholder='Email...' required='true' value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 <input type="tel" name='tel' placeholder='WhatsApp...' required='true' value={wpp} onChange={(e) => setWpp(e.target.value)}></input>
                 <button type="submit" onClick={addForm}>Enviar</button>
-              </form>
-              )}
+              </form>)}
     </div>
   );
 } 
