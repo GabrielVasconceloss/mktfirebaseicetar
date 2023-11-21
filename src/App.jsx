@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { addDoc, collection, doc, getDocs, getFirestore, serverTimestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import './style.css';
-import { Analytics } from '@vercel/analytics/react';
+import { track } from '@vercel/analytics';
  
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCLH85Iy5VA7TfIUP5xMX6oBVICTls5Vt0",
@@ -30,6 +30,7 @@ export const App = () => {
     }else{
       setEnviado(true);
       console.log(enviado);
+      track('Form Submitted', { formId: 'seu_form_id' });
       const form = await addDoc(formsCollection, {empresa, nomecomp, nomemanu, email, wpp, data:serverTimestamp(), status:0});}
    
   }
@@ -79,7 +80,6 @@ export const App = () => {
                 <input type="email" name="email" placeholder='Email...' required='true' value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 <input type="tel" name='tel' placeholder='WhatsApp...' required='true' value={wpp} onChange={(e) => setWpp(e.target.value)}></input>
                 <button type="submit" onClick={addForm}>Enviar</button>
-                <Analytics />
               </form>
               )}
     </div>
