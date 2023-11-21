@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { addDoc, collection, doc, getDocs, getFirestore } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, getFirestore, serverTimestamp } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import './style.css';
  
@@ -10,21 +10,29 @@ const firebaseApp = initializeApp({
 });
 
 export const App = () => {
+  document.title = 'Icetar';
   const [empresa, setEmpresa] = useState("");
   const [nomecomp, setNomecomp] = useState("");
   const [nomemanu, setNomemanu] = useState("");
   const [email, setEmail] = useState("");
   const [wpp, setWpp] = useState("");
   const [forms, setFoms] = useState([]);
-
   const db = getFirestore(firebaseApp);
   const formsCollection = collection(db, 'mkt');
+  const [enviado, setEnviado] = useState(false);
+  const [erro, setErro] = useState(null);
 
   async function addForm(){
-    const form = await addDoc(formsCollection, {empresa, nomecomp, nomemanu, email, wpp});
-    console.log(form);
-    
+    if (!empresa || !nomecomp || !nomemanu || !email || !wpp) {
+      setErro("Por favor, preencha todos os campos.");
+      return;
+    }else{
+      setEnviado(true);
+      console.log(enviado);
+      const form = await addDoc(formsCollection, {empresa, nomecomp, nomemanu, email, wpp, data:serverTimestamp(), status:0});}
+   
   }
+  
 
   useEffect(()=> {
     const getForms = async () => {
@@ -43,20 +51,35 @@ export const App = () => {
           className="whatsapp-icon"
         />
       </a>
-      <form>
-        <div className="logo-container">
-          <a href='https://www.icetar.com.br/'>
-            <img src="/logo192.png" alt="Logo" className="logo" hs />
-          </a>
-        </div>
-        <h1>Solicite sua cotação</h1>
-        <input type='text' placeholder='Nome da Empresa...' value={empresa} onChange={(e) => setEmpresa(e.target.value)}></input>
-        <input type='text' placeholder='Responsável por Compras...' value={nomecomp} onChange={(e) => setNomecomp(e.target.value)}></input>
-        <input type='text' placeholder='Responsável por Manutenção...' value={nomemanu} onChange={(e) => setNomemanu(e.target.value)}></input>
-        <input type='text' placeholder='Email...' value={email} onChange={(e) => setEmail(e.target.value)}></input>
-        <input type='text' placeholder='WhatsApp...' value={wpp} onChange={(e) => setWpp(e.target.value)}></input>
-        <button type="submit" onClick={addForm}>Enviar</button>
-      </form>
+      {enviado ? (
+              <div className='div-env'>
+                <div className="logo-container">
+                  <img src="/cheque.png" alt="Logo" className="cheque"/>
+                </div>
+                <h2>Cotação enviada!</h2>
+              </div>
+            ) : (
+              <form>
+
+                {erro && <div className="erro-message">
+                  {erro}
+                  <img src="/error.png" alt="Logo" className="cheque"/>
+                  </div>}
+
+                <div className="logo-container">
+                  <a href='https://www.icetar.com.br/'>
+                    <img src="/logo192.png" alt="Logo" className="logo"/>
+                  </a>
+                </div>
+                <h1>Solicite sua cotação</h1>
+                <input type='text' name="empresa" placeholder='Nome da Empresa...' required='true' value={empresa} onChange={(e) => setEmpresa(e.target.value)}></input>
+                <input type='text' name="name" placeholder='Responsável por Compras...' required='true' value={nomecomp} onChange={(e) => setNomecomp(e.target.value)}></input>
+                <input type='text' name="responsavel" placeholder='Responsável por Manutenção...' value={nomemanu} onChange={(e) => setNomemanu(e.target.value)}></input>
+                <input type="email" name="email" placeholder='Email...' required='true' value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                <input type="tel" name='tel' placeholder='WhatsApp...' required='true' value={wpp} onChange={(e) => setWpp(e.target.value)}></input>
+                <button type="submit" onClick={addForm}>Enviar</button>
+              </form>
+              )}
     </div>
   );
 } 
