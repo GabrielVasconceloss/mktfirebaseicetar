@@ -16,6 +16,7 @@ export const App = () => {
   const [nomecomp, setNomecomp] = useState("");
   const [email, setEmail] = useState("");
   const [wpp, setWpp] = useState("");
+  const [obs, setObs] = useState("");
   const [forms, setFoms] = useState([]);
   const db = getFirestore(firebaseApp);
   const formsCollection = collection(db, 'mkt');
@@ -28,9 +29,8 @@ export const App = () => {
       return;
     }else{
       setEnviado(true);
-      console.log(enviado);
       track('Form Submitted', { formId: 'seu_form_id' });
-      const form = await addDoc(formsCollection, {empresa, nomecomp, email, wpp, data:serverTimestamp(), status:0});}
+      const form = await addDoc(formsCollection, {empresa, nomecomp, email, wpp, obs, data:serverTimestamp(), status:0});}
    
   }
   
@@ -68,6 +68,7 @@ export const App = () => {
                 <input type='text' name="name" placeholder='Responsável...' required='true' value={nomecomp} onChange={(e) => setNomecomp(e.target.value)}></input>
                 <input type="email" name="email" placeholder='Email...' required='true' value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 <input type="tel" name='tel' placeholder='WhatsApp...' required='true' value={wpp} onChange={(e) => setWpp(e.target.value)}></input>
+                <textarea type='text' name="obs"  placeholder='Observações...' rows="4" value={obs} onChange={(e) => setObs(e.target.value)}></textarea>
                 <button type="submit" onClick={addForm}>Enviar</button>
               </form>)}
     </div>
